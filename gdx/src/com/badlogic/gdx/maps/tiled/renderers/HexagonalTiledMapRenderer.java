@@ -176,7 +176,7 @@ public class HexagonalTiledMapRenderer extends BatchTiledMapRenderer {
 	}
 
 	/** render a single cell */
-	private void renderCell (final TiledMapTileLayer.Cell cell, final float x, final float y, final float color) {
+	protected void renderCell (final TiledMapTileLayer.Cell cell, final float x, final float y, final float color) {
 		if (cell != null) {
 			final TiledMapTile tile = cell.getTile();
 			if (tile != null) {
