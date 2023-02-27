@@ -61,20 +61,12 @@ public class HexagonalTiledMapRenderer extends BatchTiledMapRenderer {
 	private void init (TiledMap map) {
 		String axis = map.getProperties().get("staggeraxis", String.class);
 		if (axis != null) {
-			if (axis.equals("x")) {
-				staggerAxisX = true;
-			} else {
-				staggerAxisX = false;
-			}
+			staggerAxisX = axis.equals("x");
 		}
 
 		String index = map.getProperties().get("staggerindex", String.class);
 		if (index != null) {
-			if (index.equals("even")) {
-				staggerIndexEven = true;
-			} else {
-				staggerIndexEven = false;
-			}
+			staggerIndexEven = index.equals("even");
 		}
 
 		// due to y-axis being different we need to change stagger index in even map height situations as else it would render
@@ -83,12 +75,12 @@ public class HexagonalTiledMapRenderer extends BatchTiledMapRenderer {
 
 		Integer length = map.getProperties().get("hexsidelength", Integer.class);
 		if (length != null) {
-			hexSideLength = length.intValue();
+			hexSideLength = length;
 		} else {
 			if (staggerAxisX) {
 				length = map.getProperties().get("tilewidth", Integer.class);
 				if (length != null) {
-					hexSideLength = 0.5f * length.intValue();
+					hexSideLength = 0.5f * length;
 				} else {
 					TiledMapTileLayer tmtl = (TiledMapTileLayer)map.getLayers().get(0);
 					hexSideLength = 0.5f * tmtl.getTileWidth();
@@ -96,7 +88,7 @@ public class HexagonalTiledMapRenderer extends BatchTiledMapRenderer {
 			} else {
 				length = map.getProperties().get("tileheight", Integer.class);
 				if (length != null) {
-					hexSideLength = 0.5f * length.intValue();
+					hexSideLength = 0.5f * length;
 				} else {
 					TiledMapTileLayer tmtl = (TiledMapTileLayer)map.getLayers().get(0);
 					hexSideLength = 0.5f * tmtl.getTileHeight();
@@ -162,13 +154,13 @@ public class HexagonalTiledMapRenderer extends BatchTiledMapRenderer {
 			final int col2 = Math.min(layerWidth,
 				(int)((viewBounds.x + viewBounds.width + layerTileWidth - layerOffsetY) / layerTileWidth));
 
-			float shiftX = 0;
 			for (int row = row2 - 1; row >= row1; row--) {
 				// depending on the stagger index either shift for even or uneven indexes
-				if ((row % 2 == 0) == staggerIndexEven)
+				float shiftX = 0;
+				if ((row % 2 == 0) == staggerIndexEven) {
 					shiftX = layerTileWidth50;
-				else
-					shiftX = 0;
+				}
+
 				for (int col = col1; col < col2; col++) {
 					renderCell(layer.getCell(col, row), layerTileWidth * col + shiftX + layerOffsetX,
 						tileHeightUpperCorner * row + layerOffsetY, color);
