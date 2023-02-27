@@ -58,6 +58,12 @@ public class HexagonalTiledMapRenderer extends BatchTiledMapRenderer {
 		init(map);
 	}
 
+	@Override
+	public void setMap (TiledMap map) {
+		super.setMap(map);
+		init(map);
+	}
+
 	private void init (TiledMap map) {
 		String axis = map.getProperties().get("staggeraxis", String.class);
 		if (axis != null) {
